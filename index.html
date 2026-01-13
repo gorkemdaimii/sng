@@ -1,208 +1,163 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Şevvalimmms</title>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Şevvalimmms</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
+    /* FIX: ekran tıklamasını yutmasın */
+    .hearts-background{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+    }
+    .heart{
+      position:absolute;
+      font-size:30px;
+      color:rgba(255,255,255,.3);
+      animation:float linear infinite;
+      cursor:pointer;
+      transition:all .3s ease;
+      pointer-events:auto;
+    }
+    .heart.popped{animation:pop .5s ease forwards}
 
-        .hearts-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: auto;
-            z-index: 0;
-        }
+    @keyframes pop{
+      0%{transform:scale(1) rotate(0);opacity:1}
+      50%{transform:scale(1.5) rotate(180deg);opacity:1}
+      100%{transform:scale(0) rotate(360deg);opacity:0}
+    }
+    @keyframes float{
+      0%{transform:translateY(100vh) rotate(0);opacity:0}
+      10%{opacity:1}
+      90%{opacity:1}
+      100%{transform:translateY(-100px) rotate(360deg);opacity:0}
+    }
 
-        .heart {
-            position: absolute;
-            font-size: 30px;
-            color: rgba(255, 255, 255, 0.3);
-            animation: float linear infinite;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+    .container{
+      background:#fff;
+      border-radius:20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.3);
+      padding:40px;
+      max-width:600px;
+      width:100%;
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+    h1{color:#333;margin-bottom:10px;font-size:2em}
+    p{color:#666;margin-bottom:30px;line-height:1.6}
 
-        .heart.popped {
-            animation: pop 0.5s ease forwards;
-        }
+    model-viewer{
+      width:100%;
+      height:400px;
+      border-radius:15px;
+      margin:20px 0;
+      background:#f5f5f5;
+    }
 
-        @keyframes pop {
-            0% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.5) rotate(180deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        model-viewer {
-            width: 100%;
-            height: 400px;
-            border-radius: 15px;
-            margin: 20px 0;
-            background: #f5f5f5;
-        }
-
-        .ar-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .ar-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .ar-button:active {
-            transform: translateY(0);
-        }
-    </style>
+    .ar-button{
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff;border:none;
+      padding:15px 40px;
+      font-size:1.1em;
+      border-radius:50px;
+      cursor:pointer;
+      transition:all .3s ease;
+      box-shadow:0 4px 15px rgba(102,126,234,.4);
+    }
+    .ar-button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(102,126,234,.6)}
+    .ar-button:active{transform:translateY(0)}
+    .ar-button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+  </style>
 </head>
 <body>
-    <div class="hearts-background" id="heartsContainer"></div>
-    
-    <div class="container">
-        <h1>Aşkım seni soruyo bu sünger </h1>
-        <p>çok tatlısın falan diyo <3 </p>
+  <div class="hearts-background" id="heartsContainer"></div>
 
-        <model-viewer id="modelViewer"
-            src="sponge.glb"
-            ar
-            ar-modes="webxr scene-viewer quick-look"
-            camera-controls
-            shadow-intensity="1"
-            auto-rotate>
-        </model-viewer>
+  <div class="container">
+    <h1>Aşkım seni soruyo bu sünger</h1>
+    <p>çok tatlısın falan diyo &lt;3</p>
 
-        <button class="ar-button" id="arButton">
-            Çalıştır
-        </button>
-    </div>
+    <model-viewer id="modelViewer"
+      src="sponge.glb"
+      ar
+      ar-modes="quick-look webxr scene-viewer"
+      camera-controls
+      shadow-intensity="1"
+      auto-rotate>
+    </model-viewer>
 
-    <script>
-        const modelViewer = document.getElementById('modelViewer');
-        const arButton = document.getElementById('arButton');
-        const heartsContainer = document.getElementById('heartsContainer');
+    <button class="ar-button" id="arButton" disabled>Yükleniyor...</button>
+  </div>
 
-        // AR button click
-        arButton.addEventListener('click', () => {
-            modelViewer.activateAR();
-        });
+  <script>
+    const modelViewer = document.getElementById('modelViewer');
+    const arButton = document.getElementById('arButton');
+    const heartsContainer = document.getElementById('heartsContainer');
 
-        // Create floating hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-            heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
-            heart.style.animationDelay = Math.random() * 5 + 's';
-            
-            // Touch/Click event for hearts
-            const popHeart = (e) => {
-                e.stopPropagation();
-                heart.classList.add('popped');
-                setTimeout(() => {
-                    heart.remove();
-                    createHeart(); // Create a new one
-                }, 500);
-            };
-            
-            heart.addEventListener('click', popHeart);
-            heart.addEventListener('touchstart', popHeart);
-            
-            heartsContainer.appendChild(heart);
+    // Model yüklenince butonu aktif et
+    modelViewer.addEventListener("load", () => {
+      arButton.disabled = false;
+      arButton.textContent = "Çalıştır";
+    });
 
-            setTimeout(() => {
-                if (heart.parentElement) {
-                    heart.remove();
-                }
-            }, 15000);
-        }
+    // Eğer model yüklenemezse
+    modelViewer.addEventListener("error", () => {
+      arButton.disabled = true;
+      arButton.textContent = "Model yüklenemedi";
+      alert("Model yüklenemedi. Dosya yolunu ve boyutunu kontrol et.");
+    });
 
-        // Create hearts continuously
-        setInterval(createHeart, 500);
-        
-        // Create initial hearts
-        for (let i = 0; i < 15; i++) {
-            setTimeout(createHeart, i * 300);
-        }
-    </script>
+    arButton.addEventListener('click', async () => {
+      try {
+        await modelViewer.activateAR();
+      } catch (e) {
+        alert("AR açılamadı. iOS'ta Safari + Quick Look gerekiyor. (Model boyutu büyükse de açılmaz.)");
+      }
+    });
+
+    function createHeart(){
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random()*100 + '%';
+      heart.style.fontSize = (Math.random()*20 + 20) + 'px';
+      heart.style.animationDuration = (Math.random()*5 + 8) + 's';
+      heart.style.animationDelay = Math.random()*5 + 's';
+
+      const popHeart = (e) => {
+        e.stopPropagation();
+        heart.classList.add('popped');
+        setTimeout(() => {
+          heart.remove();
+          createHeart();
+        }, 500);
+      };
+
+      heart.addEventListener('click', popHeart, { passive:true });
+      heart.addEventListener('touchstart', popHeart, { passive:true });
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => { if(heart.parentElement) heart.remove(); }, 15000);
+    }
+
+    setInterval(createHeart, 500);
+    for(let i=0;i<15;i++) setTimeout(createHeart, i*300);
+  </script>
 </body>
 </html>
